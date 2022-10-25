@@ -1,4 +1,4 @@
-const vmController = require("../functions/vm-controller");
+const vmController = require("./vmService");
 
 // define two queues
 let openQueue = [
@@ -16,21 +16,21 @@ module.exports = {
     createVM(userId) {
         const index = openQueue.findIndex( item => item.userId == null)
         if(index == -1){
-           return 0
+           return 0;
         }
         else {
             openQueue[index].userId = userId;
             vmController.createvm(openQueue[index].vmId);
+            console.log(openQueue);
+            return 1;
         }
-
-        console.log(openQueue);
     },
 
     dropVM(userId){
         openQueue = openQueue.filter(item => {
             if(item.userId == userId){
                 vmController.dropvm(item.vmId); 
-                return item.userId ="null";
+                return item.userId =null;
             }
             else {
                 return item
