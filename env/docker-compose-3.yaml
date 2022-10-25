@@ -1,0 +1,32 @@
+version: '3.8'
+
+networks: 
+  node-network-3:
+    driver: bridge
+
+services:
+  kali-3:
+    image: kali-${VM_VERSION}
+    build:
+      context: ../docker
+      dockerfile: Dockerfile
+      args:
+        DESKTOP_ENVIRONMENT: xfce
+        REMOTE_ACCESS: vnc
+        KALI_PACKAGE: default
+        RDP_PORT:  13389
+        VNC_PORT: 5908
+        VNC_DISPLAY: 8
+        SSH_PORT: 20022
+        USER_PASSWORD: ${USER_PASSWORD}
+    container_name: kali-${VM_VERSION}
+    restart: always
+    networks:
+      - node-network-3
+    ports:
+      - ${NOVNC_PORT}:5902
+  metasploitable-3:
+    image: piter518/metasploitable2
+    container_name: meta-${VM_VERSION}
+    networks:
+      - node-network-3
